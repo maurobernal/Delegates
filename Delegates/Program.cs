@@ -5,7 +5,11 @@ public class Program
     static void Main(string[] args)
     {
         //FuncExample();
-        ActionExample();
+        //ActionExample();
+        //PredicateExample();
+        //PredicateWithArrayExample();
+        PredicateWithLinqExample();
+
     }
        
     public static int Sum(int num1, int num2) => num1 + num2;
@@ -53,7 +57,67 @@ public class Program
         delegate4("Mensaje");
 
     }
-    public static void PredicateExample() { }
-    public static void PredicateWithArrayExample() { }
-    public static void PredicateWithLinqExample() { }
+
+
+    public static bool isEven(int num) => num %2 == 0;
+    public static void PredicateExample() {
+
+        var delegate1 = isEven;
+        Console.WriteLine(delegate1);
+        Console.WriteLine(delegate1(2));
+
+        //Explict
+        Predicate<int> delegate2 = isEven;
+        Console.WriteLine(delegate2);
+        Console.WriteLine(delegate2(2));
+
+        //Anonymous
+        Predicate<int> delegate3 = delegate (int num) { return num % 2 == 0; };
+        Console.WriteLine(delegate3);
+        Console.WriteLine(delegate3(2));
+
+        //Lambda
+        Predicate<int> delegate4 = (int num) => num % 2 == 0;
+        Console.WriteLine(delegate4);
+        Console.WriteLine(delegate4(2));
+
+
+    }
+    public static void PredicateWithArrayExample()
+    {
+        int[] nums = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+        var Evens = Array.FindAll(nums, isEven);
+        foreach (var item in Evens)
+            Console.WriteLine(item);
+
+        var Evens2 = Array.FindAll(nums, (num) => num %2 == 0);
+        foreach (var item in Evens2)
+            Console.WriteLine(item);
+
+    }
+    public static void PredicateWithLinqExample() { 
+
+        List<People> list = new List<People>();
+        list.Add(new People() {Name="Mauro", Age = 37 });
+        list.Add(new People() { Name = "Regina", Age = 2 });
+        list.Add(new People() { Name = "Diego", Age = 19});
+        list.Add(new People() { Name = "Ana", Age = 15 });
+        list.Add(new People() { Name = "Luis", Age = 22 });
+
+        // Listar las Age>18
+        var list2= list.Where(isGreater);
+        foreach (var item in list2)
+            Console.WriteLine($"Name: {item.Name} Age:{item.Age}");
+        
+
+
+
+    }
+    public static bool isGreater(People people) => people.Age > 18;
 }
+
+public class People {
+    public string Name { get; set; }
+    public int Age { get; set; }
+}
+
